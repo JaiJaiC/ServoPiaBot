@@ -4,20 +4,20 @@
 思考：是否可以通过学习的方式让机器产生情感？对声音进行一些操作，输出不均匀的舵机角度和速度（力度），是否能探索一些音乐技巧？是否能学会自主即兴？
 
 # PLAN
-## Plan1：数字舵机
+### Plan1：数字舵机
 不太美观；物理噪声大<br>
 https://www.bilibili.com/video/BV1br4y1y7Ta?vd_source=e9e3ea2b38df6c311ddde1bea2d8a489
 https://gfthub.com/FFtust/automatic_gita
-## Plan2：推拉电磁铁
+### Plan2：推拉电磁铁
 物理噪声大<br>
 https://www.bilibili.com/video/BV16X4y1B7jB?vd_source=e9e3ea2b38df6c311ddde1bea2d8a489
-## Plan3：滑轨+机械手
+### Plan3：滑轨+机械手
 按不了复杂和弦；滑轨慢，节拍快弹不了<br>
 https://www.bilibili.com/video/BV18a4y1j7Gt?vd_source=e9e3ea2b38df6c311ddde1bea2d8a489
-## Plan4：机械臂+灵巧手
+### Plan4：机械臂+灵巧手
 目前不成熟；门槛高，DIY没必要<br>
 https://www.bilibili.com/video/BV13Jd5BwEWG?vd_source=e9e3ea2b38df6c311ddde1bea2d8a489
-### 对比了以上四种主流方案，最终决定采用方案1，理由如下：<br>
+#### 对比了以上四种主流方案，最终决定采用方案1，理由如下：<br>
 1.Plan3和Plan4成本1k往上，直接pass；而且为了模拟人手完全没必要，也永远不可能达到人类钢琴大师的水平<br>
 2.论最低成本，大数量（60+）的舵机（单个SG90在5.5元左右）成本比推拉电磁铁（单个AH-520B在7.5元左右）成本便宜太多；<br>
 3.论实现难度，Plan2推拉电磁铁方案暂未找到开源<br>
@@ -65,16 +65,16 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 另外接线的时候一定不要带电操作！拔掉插头，戴绝缘手套！注意安全！<br>
 
 # Project Tree
-├─ServoPiaBot <span style="float:right">Keil源代码</span>
-└─Source
-    ├─Photos                       
-    ├─Scripts
-    │  ├─C(.txt) <span style="float:right">源MIDI转化后的C文件，替换到main.c对应部分可演奏不同歌曲</span>
-    │  ├─Code(main.c) <span style="float:right">调试过程中的部分main.c源代码</span>
-    │  ├─MID(.mid) <span style="float:right">源MIDI音频文件</span>
-    │  └─midi2c.py <span style="float:right">MID转C脚本</span>
-    ├─Showcase <span style="float:right">弹奏效果视频</span>
-    └─Wiring <span style="float:right">接线及BOM</span>
+├─ServoPiaBot                   Keil源代码<br>
+└─Source<br>
+    ├─Photos                       <br>
+    ├─Scripts<br>
+    │  ├─C(.txt)                 源MIDI转化后的C文件，替换到main.c对应部分可演奏不同歌曲<br>
+    │  ├─Code(main.c)            调试过程中的部分main.c源代码<br>
+    │  ├─MID(.mid)               源MIDI音频文件<br>
+    │  └─midi2c.py               MID转C脚本<br>
+    ├─Showcase                   弹奏效果视频<br>
+    └─Wiring                     接线及BOM<br>
 
 # Shoucase
 菊次郎的夏天：<br>
