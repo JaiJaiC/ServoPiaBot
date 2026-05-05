@@ -65,16 +65,16 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 另外接线的时候一定不要带电操作！拔掉插头，戴绝缘手套！注意安全！<br>
 
 # Project Tree
-├─ServoPiaBot                   Keil源代码<br>
-└─Source<br>
-    ├─Photos                       <br>
-    ├─Scripts<br>
-    │  ├─C(.txt)                 源MIDI转化后的C文件，替换到main.c对应部分可演奏不同歌曲<br>
-    │  ├─Code(main.c)            调试过程中的部分main.c源代码<br>
-    │  ├─MID(.mid)               源MIDI音频文件<br>
-    │  └─midi2c.py               MID转C脚本<br>
-    ├─Showcase                   弹奏效果视频<br>
-    └─Wiring                     接线及BOM<br>
+├─ServoPiaBot <div align="right">Keil源代码</div>
+└─Source
+    ├─Photos                       
+    ├─Scripts
+    │  ├─C(.txt) <div align="right">源MIDI转化后的C文件，替换到main.c对应部分可演奏不同歌曲</div>
+    │  ├─Code(main.c) <div align="right">调试过程中的部分main.c源代码</div>
+    │  ├─MID(.mid) <div align="right">源MIDI音频文件</div>
+    │  └─midi2c.py <div align="right">MID转C脚本</div>
+    ├─Showcase <div align="right">弹奏效果视频</div>
+    └─Wiring <div align="right">接线及BOM</div>
 
 # Shoucase
 菊次郎的夏天：<br>
