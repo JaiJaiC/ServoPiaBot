@@ -1,8 +1,7 @@
 # 【ServoPiaBot】
 价值：学习乐理；自动伴奏；AI音乐创作<br>
 痛点：按键力度均匀，没有灵魂；机械震动+噪声大，弹奏不干净；程序写死，节奏反常，听感机械<br>
-
-是否可以通过学习的方式让机器产生情感？对声音进行一些操作，输出不均匀的舵机角度和速度（力度），是否能探索一些音乐技巧？是否能学会自主即兴？
+思考：是否可以通过学习的方式让机器产生情感？对声音进行一些操作，输出不均匀的舵机角度和速度（力度），是否能探索一些音乐技巧？是否能学会自主即兴？
 ---------------------------------------------------------------------------------------------------------
 # PLAN
 ## Plan1：数字舵机
@@ -18,8 +17,7 @@ https://www.bilibili.com/video/BV18a4y1j7Gt?vd_source=e9e3ea2b38df6c311ddde1bea2
 ## Plan4：机械臂+灵巧手
 目前不成熟；门槛高，DIY没必要<br>
 https://www.bilibili.com/video/BV13Jd5BwEWG?vd_source=e9e3ea2b38df6c311ddde1bea2d8a489
-
-对比了以上四种主流方案，最终决定采用方案1，理由如下：
+### 对比了以上四种主流方案，最终决定采用方案1，理由如下：<br>
 1.Plan3和Plan4成本1k往上，直接pass；而且为了模拟人手完全没必要，也永远不可能达到人类钢琴大师的水平<br>
 2.论最低成本，大数量（60+）的舵机（单个SG90在5.5元左右）成本比推拉电磁铁（单个AH-520B在7.5元左右）成本便宜太多；<br>
 3.论实现难度，Plan2推拉电磁铁方案暂未找到开源<br>
@@ -45,28 +43,26 @@ SG90舵机（9g 180°）（5组*12）60个 385元<br>
 keil5(MDK-ARM)、STM32CubeMX、Vscode(Python)、Terminal
 
 ## Wiring
-调试阶段：电脑PC端通过USB口接STLink；STLink上的SWLCK、SWDIO、GND、3.3V通过4pin杜邦线接STM32，STLink直接给STM32供电；STM32上找到GND、SCL、SDA、VCC接到PCA9685A对应端口；四个PCA9685A依次串联，第1个PCA9685A的I2C地址是0x40，控制1-16号舵机；第2个需要焊接A0，I2C地址是0x41，依次第3个焊接A1（0x42），第4个焊接A0和A1（0x43）
-1个PCA9685A模块上插16个SG90舵机，找到CA9685A模块上的PWM、V+、GND对应插入即可
-上电：
-三芯纯铜电线一端直接插排查，一端接LRS-150-5电源开关的L火、N零、E地接口；LRS-150-5电源开关输出的+V和-V分别接PCA9685A的V+和GND（给64个舵机供电）
-（独立运行：2S锂电池或充电宝给STM32供电,不同型号注意工作电压范围）
+调试阶段：电脑PC端通过USB口接STLink；STLink上的SWLCK、SWDIO、GND、3.3V通过4pin杜邦线接STM32，STLink直接给STM32供电；STM32上找到GND、SCL、SDA、VCC接到PCA9685A对应端口；四个PCA9685A依次串联，第1个PCA9685A的I2C地址是0x40，控制1-16号舵机；第2个需要焊接A0，I2C地址是0x41，依次第3个焊接A1（0x42），第4个焊接A0和A1（0x43）<br>
+1个PCA9685A模块上插16个SG90舵机，找到CA9685A模块上的PWM、V+、GND对应插入即可<br>
+上电：<br>
+三芯纯铜电线一端直接插排查，一端接LRS-150-5电源开关的L火、N零、E地接口；LRS-150-5电源开关输出的+V和-V分别接PCA9685A的V+和GND（给64个舵机供电）<br>
+（独立运行：2S锂电池或充电宝给STM32供电,不同型号注意工作电压范围）<br>
 ![主板接线图](Source/Wiring/!Wiring diagram!.png)
 
 ## 机械安装
-1.连线：板子、STM32、电源全部接好
-64个舵机对应5个八度组（12个/组）（舵机编号1-60依次对应大字组、小字组、小字一组、小字二组、小字三组；最后4个舵机用作测试，不固定）
-
-铝型材作为支撑，角码作为固定连接件；把舵机分两排固定，适应黑白键的物理落差
-用热熔胶枪直接把舵机固定在铝型材上，先不安装舵盘；全部测试舵机没问题，需要全部校准角度；最后安装舵盘，测试按压力度。
-（可以随时微调铝型材的位置以达到最好的琴键效果）
+1.连线：板子、STM32、电源全部接好<br>
+64个舵机对应5个八度组（12个/组）（舵机编号1-60依次对应大字组、小字组、小字一组、小字二组、小字三组；最后4个舵机用作测试，不固定）<br>
+铝型材作为支撑，角码作为固定连接件；把舵机分两排固定，适应黑白键的物理落差<br>
+用热熔胶枪直接把舵机固定在铝型材上，先不安装舵盘；全部测试舵机没问题，需要全部校准角度；最后安装舵盘，测试按压力度。<br>
+（可以随时微调铝型材的位置以达到最好的琴键效果）<br>
 ![安装效果](Source/Photos/1.jpg)
 ---------------------------------------------------------------------------------------------------------
 # Problem
-The Code is successfully generated under : F:/backup/portfolio/miniprogram/ServoPiaBot/ServoPiaBot Project language : C but MDK-ARM V5project generation have a problem.
-一直解决不了，都不是软件、网络、文件名的问题，项目不复杂，keil5手动创建也比较快
-
-一定一定要用万用表测量一下三芯纯铜电线的零火接线！！！我网上买的一根，结果商家标注的火线和零线颜色是反的！还好用表测了，不然要出大问题！万用表拨到交流750V档，一定要是L和N是220V、L和E是220V、N和E是0V才可以！
-另外接线的时候一定不要带电操作！拔掉插头，戴绝缘手套！注意安全！
+The Code is successfully generated under : F:/backup/portfolio/miniprogram/ServoPiaBot/ServoPiaBot Project language : C but MDK-ARM V5project generation have a problem.<br>
+一直解决不了，都不是软件、网络、文件名的问题，项目不复杂，keil5手动创建也比较快<br>
+一定一定要用万用表测量一下三芯纯铜电线的零火接线！！！我网上买的一根，结果商家标注的火线和零线颜色是反的！还好用表测了，不然要出大问题！万用表拨到交流750V档，一定要是L和N是220V、L和E是220V、N和E是0V才可以！<br>
+另外接线的时候一定不要带电操作！拔掉插头，戴绝缘手套！注意安全！<br>
 ---------------------------------------------------------------------------------------------------------
 # Project Tree
 ├─ServoPiaBot                    Keil源代码<br>
@@ -81,14 +77,10 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
     └─Wiring                     接线及BOM<br>
 ---------------------------------------------------------------------------------------------------------
 # Shoucase
-菊次郎的夏天：
-<video src="Source/Showcase/菊次郎的夏天.mp4" controls="controls" width="100%" preload="auto">
-您的浏览器不支持播放该视频！
-</video>
+菊次郎的夏天：<br>
+<video src="Source/Showcase/菊次郎的夏天.mp4" controls="controls" width="100%" preload="auto"></video>
 我的歌声里：<br>
-<video src="Source/Showcase/我的歌声里.mp4" controls="controls" width="100%" preload="auto">
-您的浏览器不支持播放该视频！
-</video>
+<video src="Source/Showcase/我的歌声里.mp4" controls="controls" width="100%" preload="auto"></video>
 ---------------------------------------------------------------------------------------------------------
 # Reference
 https://github.com/FFtust/automatic_gita.git
