@@ -2,7 +2,7 @@
 价值：学习乐理；自动伴奏；AI音乐创作<br>
 痛点：按键力度均匀，没有灵魂；机械震动+噪声大，弹奏不干净；程序写死，节奏反常，听感机械<br>
 思考：是否可以通过学习的方式让机器产生情感？对声音进行一些操作，输出不均匀的舵机角度和速度（力度），是否能探索一些音乐技巧？是否能学会自主即兴？
-![show](Source/Photos/2.jpg)
+![show](Source/Photos/1.jpg)
 # PLAN
 ### Plan1：数字舵机
 不太美观；物理噪声大<br>
@@ -56,7 +56,6 @@ keil5(MDK-ARM)、STM32CubeMX、Vscode(Python)、Terminal
 铝型材作为支撑，角码作为固定连接件；把舵机分两排固定，适应黑白键的物理落差<br>
 用热熔胶枪直接把舵机固定在铝型材上，先不安装舵盘；全部测试舵机没问题，需要全部校准角度；最后安装舵盘，测试按压力度。<br>
 （可以随时微调铝型材的位置以达到最好的琴键效果）<br>
-![安装效果](Source/Photos/1.jpg)
 
 # Problem
 The Code is successfully generated under : F:/backup/portfolio/miniprogram/ServoPiaBot/ServoPiaBot Project language : C but MDK-ARM V5project generation have a problem.<br>
@@ -78,9 +77,9 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 
 # Shoucase
 菊次郎的夏天：<br>
-<video controls src="https://github.com/JaiJaiC/ServoPiaBot/raw/main/Source/Showcase/菊次郎的夏天.mp4" title="<video src="Source/Showcase/菊次郎的夏天.mp4" controls="controls" width="100%" preload="auto"></video>"></video>
+https://github.com/JaiJaiC/ServoPiaBot/issues/1#issue-4385851087
 我的歌声里：<br>
-<video controls src="https://github.com/JaiJaiC/ServoPiaBot/raw/main/Source/Showcase/我的歌声里.mp4" title="<video src="Source/Showcase/我的歌声里.mp4" controls="controls" width="100%" preload="auto"></video>"></video>
+https://github.com/JaiJaiC/ServoPiaBot/issues/2#issue-4385855381
 
 # Reference
 https://github.com/FFtust/automatic_gita.git
