@@ -2,7 +2,7 @@
 价值：学习乐理；自动伴奏；AI音乐创作<br>
 痛点：按键力度均匀，没有灵魂；机械震动+噪声大，弹奏不干净；程序写死，节奏反常，听感机械<br>
 思考：是否可以通过学习的方式让机器产生情感？对声音进行一些操作，输出不均匀的舵机角度和速度（力度），是否能探索一些音乐技巧？是否能学会自主即兴？
-
+![show](Source/Photos/2.jpg)
 # PLAN
 ### Plan1：数字舵机
 不太美观；物理噪声大<br>
@@ -78,9 +78,9 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 
 # Shoucase
 菊次郎的夏天：<br>
-<video src="Source/Showcase/菊次郎的夏天.mp4" controls="controls" width="100%" preload="auto"></video>
+<video controls src="https://github.com/JaiJaiC/ServoPiaBot/raw/main/Source/Showcase/菊次郎的夏天.mp4" title="<video src="Source/Showcase/菊次郎的夏天.mp4" controls="controls" width="100%" preload="auto"></video>"></video>
 我的歌声里：<br>
-<video src="Source/Showcase/我的歌声里.mp4" controls="controls" width="100%" preload="auto"></video>
+<video controls src="https://github.com/JaiJaiC/ServoPiaBot/raw/main/Source/Showcase/我的歌声里.mp4" title="<video src="Source/Showcase/我的歌声里.mp4" controls="controls" width="100%" preload="auto"></video>"></video>
 
 # Reference
 https://github.com/FFtust/automatic_gita.git
