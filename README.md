@@ -65,7 +65,7 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 另外接线的时候一定不要带电操作！拔掉插头，戴绝缘手套！注意安全！<br>
 
 # Project Tree
-├─ServoPiaBot                    Keil源代码<br>
+├─ServoPiaBot                   Keil源代码<br>
 └─Source<br>
     ├─Photos                       <br>
     ├─Scripts<br>
