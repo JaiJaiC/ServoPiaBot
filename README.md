@@ -2,7 +2,7 @@
 价值：学习乐理；自动伴奏；AI音乐创作<br>
 痛点：按键力度均匀，没有灵魂；机械震动+噪声大，弹奏不干净；程序写死，节奏反常，听感机械<br>
 思考：是否可以通过学习的方式让机器产生情感？对声音进行一些操作，输出不均匀的舵机角度和速度（力度），是否能探索一些音乐技巧？是否能学会自主即兴？
----------------------------------------------------------------------------------------------------------
+
 # PLAN
 ## Plan1：数字舵机
 不太美观；物理噪声大<br>
@@ -22,7 +22,7 @@ https://www.bilibili.com/video/BV13Jd5BwEWG?vd_source=e9e3ea2b38df6c311ddde1bea2
 2.论最低成本，大数量（60+）的舵机（单个SG90在5.5元左右）成本比推拉电磁铁（单个AH-520B在7.5元左右）成本便宜太多；<br>
 3.论实现难度，Plan2推拉电磁铁方案暂未找到开源<br>
 4.舵机和推拉电磁铁的物理噪声都无法避免，但后期可以通过物理隔离真空消音等方法减弱，加大音响音量，噪声就不那么明显<br>
----------------------------------------------------------------------------------------------------------
+
 # Material&Tool&Wiring
 ## hardware
 STM32F407VET6（新版C30D ROS底层主控四驱） 1个 315元<br>
@@ -57,13 +57,13 @@ keil5(MDK-ARM)、STM32CubeMX、Vscode(Python)、Terminal
 用热熔胶枪直接把舵机固定在铝型材上，先不安装舵盘；全部测试舵机没问题，需要全部校准角度；最后安装舵盘，测试按压力度。<br>
 （可以随时微调铝型材的位置以达到最好的琴键效果）<br>
 ![安装效果](Source/Photos/1.jpg)
----------------------------------------------------------------------------------------------------------
+
 # Problem
 The Code is successfully generated under : F:/backup/portfolio/miniprogram/ServoPiaBot/ServoPiaBot Project language : C but MDK-ARM V5project generation have a problem.<br>
 一直解决不了，都不是软件、网络、文件名的问题，项目不复杂，keil5手动创建也比较快<br>
 一定一定要用万用表测量一下三芯纯铜电线的零火接线！！！我网上买的一根，结果商家标注的火线和零线颜色是反的！还好用表测了，不然要出大问题！万用表拨到交流750V档，一定要是L和N是220V、L和E是220V、N和E是0V才可以！<br>
 另外接线的时候一定不要带电操作！拔掉插头，戴绝缘手套！注意安全！<br>
----------------------------------------------------------------------------------------------------------
+
 # Project Tree
 ├─ServoPiaBot                    Keil源代码<br>
 └─Source<br>
@@ -75,12 +75,12 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
     │  └─midi2c.py               MID转C脚本<br>
     ├─Showcase                   弹奏效果视频<br>
     └─Wiring                     接线及BOM<br>
----------------------------------------------------------------------------------------------------------
+
 # Shoucase
 菊次郎的夏天：<br>
 <video src="Source/Showcase/菊次郎的夏天.mp4" controls="controls" width="100%" preload="auto"></video>
 我的歌声里：<br>
 <video src="Source/Showcase/我的歌声里.mp4" controls="controls" width="100%" preload="auto"></video>
----------------------------------------------------------------------------------------------------------
+
 # Reference
 https://github.com/FFtust/automatic_gita.git
