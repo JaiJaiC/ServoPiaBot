@@ -77,9 +77,9 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 
 # Shoucase
 菊次郎的夏天：<br>
-https://github.com/JaiJaiC/ServoPiaBot/issues/1#issue-4385851087
+https://github.com/user-attachments/assets/550f6388-ff4b-4ef4-95c3-904e6b48f48c
 我的歌声里：<br>
-https://github.com/JaiJaiC/ServoPiaBot/issues/2#issue-4385855381
+https://github.com/user-attachments/assets/578db305-909b-44f5-94e9-032bf9c97e7f
 
 # Reference
 https://github.com/FFtust/automatic_gita.git
