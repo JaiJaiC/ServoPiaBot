@@ -77,10 +77,10 @@ The Code is successfully generated under : F:/backup/portfolio/miniprogram/Servo
 
 # Shoucase
 ### 菊次郎的夏天：
-<video src="https://github.com/user-attachments/assets/550f6388-ff4b-4ef4-95c3-904e6b48f48c" controls="controls" width="100%"></video>
+<video src="https://github.com/user-attachments/assets/e9d6c083-28ff-4fc9-bb5c-8381d553bc86" controls="controls" width="100%"></video>
 
 ### 我的歌声里：
-<video src="https://github.com/user-attachments/assets/578db305-909b-44f5-94e9-032bf9c97e7f" controls="controls" width="100%"></video>
+<video src="https://github.com/user-attachments/assets/550f6388-ff4b-4ef4-95c3-904e6b48f48c" controls="controls" width="100%"></video>
 
 # Reference
 https://github.com/FFtust/automatic_gita.git
