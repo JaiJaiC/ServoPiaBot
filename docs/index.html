@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ServoPiaBot — 智能钢琴演奏机器人</title>
-  <meta name="description" content="ServoPiaBot 是一个基于 STM32 和 60+ 舵机的开源钢琴演奏机器人，通过 MIDI 转舵机控制实现自动伴奏与 AI 音乐创作。">
+  <title>ServoPiaBot</title>
+  <meta name="description" content="ServoPiaBot — an open-source piano-playing robot powered by STM32 and 60+ servo motors. MIDI-to-servo control for automatic accompaniment and AI music creation.">
   <style>
     /* ===== Reset & Base ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -261,11 +261,11 @@
     <div class="nav-inner">
       <div class="nav-logo">🎹 Servo<span>Pia</span>Bot</div>
       <ul class="nav-links">
-        <li><a href="#story">项目故事</a></li>
-        <li><a href="#evolution">方案演进</a></li>
-        <li><a href="#hardware">硬件</a></li>
-        <li><a href="#showcase">演示</a></li>
-        <li><a href="#specs">规格</a></li>
+        <li><a href="#story">Story</a></li>
+        <li><a href="#evolution">Evolution</a></li>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#showcase">Showcase</a></li>
+        <li><a href="#specs">Specs</a></li>
       </ul>
     </div>
   </nav>
@@ -273,17 +273,17 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-badge">🎵 开源硬件 · 钢琴演奏机器人</div>
-      <h1>当机器学会弹钢琴</h1>
+      <div class="hero-badge">🎵 Open-Source Hardware · Piano-Playing Robot</div>
+      <h1>When Machines<br>Learn to Play Piano</h1>
       <p class="hero-tagline">
-        ServoPiaBot 使用 60+ 个舵机模拟手指按压琴键，通过 MIDI 解析驱动舵机阵列，
-        探索机器如何赋予音乐「情感」与「灵魂」。
+        ServoPiaBot uses 60+ servo motors to press piano keys, driven by MIDI parsing
+        and servo arrays — exploring how machines can infuse music with "emotion" and "soul."
       </p>
       <div class="hero-buttons">
         <a href="https://github.com/JaiJaiC/ServoPiaBot" class="btn btn-primary" target="_blank" rel="noopener">
-          ⭐ GitHub 仓库
+          ⭐ View on GitHub
         </a>
-        <a href="#showcase" class="btn btn-outline">🎬 观看演示</a>
+        <a href="#showcase" class="btn btn-outline">🎬 Watch Demo</a>
       </div>
     </div>
   </section>
@@ -292,31 +292,32 @@
   <section id="story">
     <div class="section-inner">
       <div class="section-label">Project Story</div>
-      <h2 class="section-title">背后的思考</h2>
+      <h2 class="section-title">The Vision</h2>
       <p class="section-desc">
-        传统自动演奏设备按键力度均匀、没有灵魂；机械震动与噪声让弹奏不够干净；
-        固化程序导致节奏反常、听感机械。ServoPiaBot 试图回答一个更有趣的问题——
+        Traditional auto-playing devices strike keys with uniform force — soulless.
+        Mechanical vibration and noise make the performance muddy. Hardcoded rhythms sound stiff
+        and unnatural. ServoPiaBot asks a deeper question —
       </p>
       <div class="story-grid">
         <div class="story-card">
           <div class="icon">🧠</div>
-          <h3>学习式演奏</h3>
-          <p>是否可以通过学习的方式让机器产生情感？对声音进行操作，输出不均匀的舵机角度和速度来模拟力度变化。</p>
+          <h3>Learned Expression</h3>
+          <p>Can a machine learn to feel? By varying servo angles and speeds, it produces uneven key velocities that mimic human touch and dynamics.</p>
         </div>
         <div class="story-card">
           <div class="icon">🎼</div>
-          <h3>音乐技巧探索</h3>
-          <p>通过舵机角度微调和速度曲线，探索颤音、滑音、力度渐变等真实演奏中才有的音乐技巧。</p>
+          <h3>Musical Technique</h3>
+          <p>Through fine-grained angle curves and velocity profiles, explore vibrato, glissando, and dynamic gradients — techniques only real performers master.</p>
         </div>
         <div class="story-card">
           <div class="icon">🤖</div>
-          <h3>自主即兴</h3>
-          <p>终极目标：让机器学会自主即兴创作，不仅仅是「播放」MIDI，而是真正「演奏」音乐。</p>
+          <h3>Autonomous Improvisation</h3>
+          <p>The ultimate goal: let the machine learn to improvise on its own. Not just "play back" MIDI — truly perform music with creative expression.</p>
         </div>
         <div class="story-card">
           <div class="icon">🔧</div>
-          <h3>全开源</h3>
-          <p>硬件、固件、上位机脚本全部开源。从 STM32 HAL 库到 MIDI 解析 Python 脚本，均可自由修改与分发。</p>
+          <h3>Fully Open Source</h3>
+          <p>Hardware, firmware, and host scripts — all open. From STM32 HAL libraries to the MIDI-to-C Python converter, everything is free to modify and share.</p>
         </div>
       </div>
     </div>
@@ -326,31 +327,31 @@
   <section id="evolution">
     <div class="section-inner">
       <div class="section-label">Design Evolution</div>
-      <h2 class="section-title">方案演进历程</h2>
-      <p class="section-desc">从四种主流方案中不断对比、迭代，最终选定最务实的舵机方案。</p>
+      <h2 class="section-title">From Concept to Reality</h2>
+      <p class="section-desc">Four approaches evaluated, iterated, and narrowed down to the most practical solution.</p>
       <div class="timeline">
         <div class="tl-item later">
-          <span class="tl-tag rejected">Plan 4 · 已否决</span>
-          <h4>机械臂 + 灵巧手</h4>
-          <p>目前技术不成熟，DIY 门槛过高，成本不可控。且永远不可能达到人类钢琴大师水平。</p>
+          <span class="tl-tag rejected">Plan 4 · Rejected</span>
+          <h4>Robotic Arm + Dexterous Hand</h4>
+          <p>Immature technology, prohibitive DIY barrier, uncontrolled costs. And it will never match a human concert pianist anyway.</p>
         </div>
         <div class="tl-item later">
-          <span class="tl-tag rejected">Plan 3 · 已否决</span>
-          <h4>滑轨 + 机械手</h4>
-          <p>无法弹奏复杂和弦；滑轨速度有限，节拍快的曲子跟不上。成本 ¥1000+。</p>
+          <span class="tl-tag rejected">Plan 3 · Rejected</span>
+          <h4>Slide Rail + Gripper</h4>
+          <p>Cannot play complex chords; rail speed too slow for fast passages. Cost exceeds ¥1,000.</p>
         </div>
         <div class="tl-item later">
-          <span class="tl-tag rejected">Plan 2 · 已否决</span>
-          <h4>推拉电磁铁</h4>
-          <p>物理噪声大，且单个电磁铁（AH-520B ¥7.5）成本高于舵机。暂未找到成熟开源方案。</p>
+          <span class="tl-tag rejected">Plan 2 · Rejected</span>
+          <h4>Push-Pull Solenoids</h4>
+          <p>Loud physical noise. Individual solenoids (AH-520B, ¥7.5 each) cost more than servos. No mature open-source reference available.</p>
         </div>
         <div class="tl-item done">
-          <span class="tl-tag chosen">Plan 1 · 最终方案 ✓</span>
-          <h4>数字舵机阵列（PCA9685 + SG90 × 60）</h4>
+          <span class="tl-tag chosen">Plan 1 · Final Design ✓</span>
+          <h4>Digital Servo Array (PCA9685 + SG90 × 60)</h4>
           <p>
-            单个 SG90 仅 ¥5.5，60 个总成本 ¥385。PCA9685 模块支持 16 路 PWM，
-            4 个级联驱动 64 路舵机。物理噪声可通过物理隔离 + 真空消音降低，
-            加大音响音量后噪声不明显。具备成熟的开源生态（参考 automatic_gita）。
+            SG90 servos at ¥5.5 each — 60 units for just ¥385. PCA9685 modules drive 16 PWM channels each;
+            4 daisy-chained modules handle all 64 servos. Mechanical noise can be mitigated via physical
+            isolation and louder speaker volume. Mature open-source ecosystem (reference: automatic_gita).
           </p>
         </div>
       </div>
@@ -361,32 +362,32 @@
   <section id="hardware">
     <div class="section-inner">
       <div class="section-label">Hardware</div>
-      <h2 class="section-title">硬件一览</h2>
-      <p class="section-desc">从控制板到电源，每一个组件都经过精心选型与调试。</p>
+      <h2 class="section-title">Hardware Gallery</h2>
+      <p class="section-desc">Every component — from the MCU to the power supply — carefully selected and tested.</p>
       <div class="gallery">
         <div class="gallery-item">
-          <img src="assets/images/1.jpg" alt="ServoPiaBot 整体" loading="lazy">
-          <div class="caption">整体效果</div>
+          <img src="assets/images/1.jpg" alt="ServoPiaBot Overview" loading="lazy">
+          <div class="caption">Full Assembly</div>
         </div>
         <div class="gallery-item">
-          <img src="assets/images/2.jpg" alt="舵机阵列" loading="lazy">
-          <div class="caption">SG90 舵机阵列</div>
+          <img src="assets/images/2.jpg" alt="Servo Array" loading="lazy">
+          <div class="caption">SG90 Servo Array</div>
         </div>
         <div class="gallery-item">
-          <img src="assets/images/3.jpg" alt="细节特写" loading="lazy">
-          <div class="caption">安装细节</div>
+          <img src="assets/images/3.jpg" alt="Mounting Detail" loading="lazy">
+          <div class="caption">Mounting Detail</div>
         </div>
         <div class="gallery-item">
-          <img src="assets/images/4.jpg" alt="控制电路" loading="lazy">
-          <div class="caption">控制电路</div>
+          <img src="assets/images/4.jpg" alt="Control Circuit" loading="lazy">
+          <div class="caption">Control Circuit</div>
         </div>
         <div class="gallery-item">
-          <img src="assets/images/STM32F407VET6.png" alt="STM32 主控" loading="lazy">
-          <div class="caption">STM32F407VET6 主控</div>
+          <img src="assets/images/STM32F407VET6.png" alt="STM32 MCU" loading="lazy">
+          <div class="caption">STM32F407VET6 Main Controller</div>
         </div>
         <div class="gallery-item">
-          <img src="assets/images/PCA9685A模块.jpg" alt="PCA9685A 驱动模块" loading="lazy">
-          <div class="caption">PCA9685A PWM 驱动模块</div>
+          <img src="assets/images/PCA9685A模块.jpg" alt="PCA9685A Driver" loading="lazy">
+          <div class="caption">PCA9685A PWM Driver Module</div>
         </div>
       </div>
     </div>
@@ -396,85 +397,85 @@
   <section id="bom">
     <div class="section-inner">
       <div class="section-label">Bill of Materials</div>
-      <h2 class="section-title">物料清单</h2>
-      <p class="section-desc">完整 BOM 总成本约 ¥1,200，覆盖 60 键（5 个八度）的驱动能力。</p>
+      <h2 class="section-title">Bill of Materials</h2>
+      <p class="section-desc">Full BOM total ≈ ¥1,273, covering 60 keys (5 octaves) of actuation capability.</p>
       <div style="overflow-x: auto;">
         <table class="bom-table">
           <thead>
             <tr>
-              <th>物料</th>
-              <th>规格</th>
-              <th>数量</th>
-              <th>单价</th>
-              <th>小计</th>
+              <th>Component</th>
+              <th>Specification</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Subtotal</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>🖥️ 主控板</td>
-              <td>STM32F407VET6（C30D ROS 底层主控四驱）</td>
+              <td>🖥️ MCU Board</td>
+              <td>STM32F407VET6 (C30D ROS Base Controller 4WD)</td>
               <td>1</td>
               <td class="price">¥315</td>
               <td class="price">¥315</td>
             </tr>
             <tr>
-              <td>🔌 PWM 驱动</td>
-              <td>PCA9685A 16路模块</td>
+              <td>🔌 PWM Driver</td>
+              <td>PCA9685A 16-Channel Module</td>
               <td>4</td>
               <td class="price">¥17.5</td>
               <td class="price">¥70</td>
             </tr>
             <tr>
-              <td>⚙️ 舵机</td>
-              <td>SG90 9g 180° 微型舵机</td>
+              <td>⚙️ Servo Motor</td>
+              <td>SG90 9g 180° Micro Servo</td>
               <td>60</td>
               <td class="price">¥5.5</td>
               <td class="price">¥330</td>
             </tr>
             <tr>
-              <td>🔋 电源</td>
+              <td>🔋 Power Supply</td>
               <td>MW LRS-150-5 (5V 30A)</td>
               <td>1</td>
               <td class="price">¥54</td>
               <td class="price">¥54</td>
             </tr>
             <tr>
-              <td>🪚 铝型材</td>
-              <td>20系列 黑色（4×1400mm + 若干连接件）</td>
+              <td>🪚 Aluminum Profiles</td>
+              <td>20-Series Black (4×1400mm + connectors)</td>
               <td>—</td>
               <td>—</td>
               <td class="price">¥150</td>
             </tr>
             <tr>
-              <td>🔩 角码</td>
-              <td>20 角码连接件</td>
+              <td>🔩 Corner Brackets</td>
+              <td>20-Series Angle Brackets</td>
               <td>20</td>
               <td class="price">¥1</td>
               <td class="price">¥20</td>
             </tr>
             <tr>
-              <td>🔩 螺丝套装</td>
-              <td>M4 螺丝螺母垫圈 镀镍</td>
-              <td>若干</td>
+              <td>🔩 Screw Set</td>
+              <td>M4 Screws, Nuts, Washers (Nickel-Plated)</td>
+              <td>—</td>
               <td>—</td>
               <td class="price">¥80</td>
             </tr>
             <tr>
-              <td>🔧 工具</td>
-              <td>焊台、热熔胶枪、万用表</td>
-              <td>各1</td>
+              <td>🔧 Tools</td>
+              <td>Soldering Station, Hot Glue Gun, Multimeter</td>
+              <td>1 each</td>
               <td>—</td>
               <td class="price">¥219</td>
             </tr>
             <tr>
-              <td>🔌 线材</td>
-              <td>杜邦线、三芯铜电线、粗电线、接线端子</td>
-              <td>若干</td>
+              <td>🔌 Wiring</td>
+              <td>Dupont Wires, 3-Core Copper Cable, Terminal Blocks</td>
+              <td>—</td>
               <td>—</td>
               <td class="price">¥35</td>
             </tr>
             <tr style="border-top: 2px solid rgba(255,183,77,0.3);">
-              <td colspan="4" style="text-align: right; font-weight: 700; color: #fff;">合计</td>
+              <td colspan="4" style="text-align: right; font-weight: 700; color: #fff;">Total</td>
               <td class="price" style="font-weight: 800; font-size: 1.1rem;">≈ ¥1,273</td>
             </tr>
           </tbody>
@@ -487,26 +488,26 @@
   <section id="wiring">
     <div class="section-inner">
       <div class="section-label">Wiring</div>
-      <h2 class="section-title">接线与通信</h2>
-      <p class="section-desc">I²C 总线级联架构，4 个 PCA9685A 模块控制 60+ 路舵机。</p>
+      <h2 class="section-title">Wiring &amp; Communication</h2>
+      <p class="section-desc">I²C daisy-chain architecture — 4 PCA9685A modules controlling 60+ servos.</p>
       <div class="wiring-layout">
         <div class="wiring-text">
-          <h4>🔗 I²C 级联拓扑</h4>
+          <h4>🔗 I²C Daisy-Chain Topology</h4>
           <ul>
-            <li>STM32 I²C → PCA9685A #1 (0x40) → 舵机 1-16</li>
-            <li>PCA9685A #1 → PCA9685A #2 (0x41, 焊 A0) → 舵机 17-32</li>
-            <li>PCA9685A #2 → PCA9685A #3 (0x42, 焊 A1) → 舵机 33-48</li>
-            <li>PCA9685A #3 → PCA9685A #4 (0x43, 焊 A0+A1) → 舵机 49-60</li>
+            <li>STM32 I²C → PCA9685A #1 (0x40) → Servos 1–16</li>
+            <li>PCA9685A #1 → PCA9685A #2 (0x41, solder A0) → Servos 17–32</li>
+            <li>PCA9685A #2 → PCA9685A #3 (0x42, solder A1) → Servos 33–48</li>
+            <li>PCA9685A #3 → PCA9685A #4 (0x43, solder A0+A1) → Servos 49–60</li>
           </ul>
-          <h4 style="margin-top: 1.5rem;">⚡ 供电方案</h4>
+          <h4 style="margin-top: 1.5rem;">⚡ Power Architecture</h4>
           <ul>
-            <li>LRS-150-5 电源 → PCA9685A V+ / GND（舵机供电）</li>
-            <li>ST-Link → STM32（调试阶段供电）</li>
-            <li>独立运行：2S 锂电池或充电宝供电</li>
+            <li>LRS-150-5 → PCA9685A V+ / GND (servo power)</li>
+            <li>ST-Link → STM32 (debugging power)</li>
+            <li>Standalone: 2S Li-Po battery or power bank for STM32</li>
           </ul>
         </div>
         <div class="wiring-img">
-          <img src="assets/images/Wiring.png" alt="接线图" loading="lazy">
+          <img src="assets/images/Wiring.png" alt="Wiring Diagram" loading="lazy">
         </div>
       </div>
     </div>
@@ -516,21 +517,21 @@
   <section id="showcase">
     <div class="section-inner">
       <div class="section-label">Showcase</div>
-      <h2 class="section-title">演奏演示</h2>
-      <p class="section-desc">聆听 ServoPiaBot 的实际演奏效果——舵机阵列在真实钢琴上的表现。</p>
+      <h2 class="section-title">Performance Demos</h2>
+      <p class="section-desc">Hear ServoPiaBot in action — the servo array performing on a real piano.</p>
       <div class="video-grid">
         <div class="video-card">
           <video src="https://github.com/user-attachments/assets/e9d6c083-28ff-4fc9-bb5c-8381d553bc86" controls preload="metadata" poster="assets/images/1.jpg"></video>
           <div class="video-info">
-            <h4>🎵 菊次郎的夏天</h4>
-            <p>久石让经典作品 · Summer</p>
+            <h4>🎵 Summer (菊次郎的夏天)</h4>
+            <p>Joe Hisaishi · from "Kikujiro"</p>
           </div>
         </div>
         <div class="video-card">
           <video src="https://github.com/user-attachments/assets/550f6388-ff4b-4ef4-95c3-904e6b48f48c" controls preload="metadata" poster="assets/images/1.jpg"></video>
           <div class="video-info">
-            <h4>🎵 我的歌声里</h4>
-            <p>曲婉婷 · 流行钢琴改编</p>
+            <h4>🎵 You Exist in My Song (我的歌声里)</h4>
+            <p>Wanting Qu · Pop Piano Cover</p>
           </div>
         </div>
       </div>
@@ -541,15 +542,15 @@
   <section id="repertoire">
     <div class="section-inner">
       <div class="section-label">Repertoire</div>
-      <h2 class="section-title">曲目库</h2>
-      <p class="section-desc">已适配 MIDI 转舵机控制的曲目，持续扩充中。</p>
+      <h2 class="section-title">Song Library</h2>
+      <p class="section-desc">MIDI tracks already converted to servo control — growing continuously.</p>
       <div class="song-list">
-        <div class="song-card"><div class="song-icon">☀️</div><h4>菊次郎的夏天</h4></div>
-        <div class="song-card"><div class="song-icon">🎤</div><h4>我的歌声里</h4></div>
-        <div class="song-card"><div class="song-icon">🌊</div><h4>River flows in you</h4></div>
-        <div class="song-card"><div class="song-icon">🕊️</div><h4>卡农</h4></div>
-        <div class="song-card"><div class="song-icon">☀️</div><h4>晴天</h4></div>
-        <div class="song-card"><div class="song-icon">🍃</div><h4>起风了</h4></div>
+        <div class="song-card"><div class="song-icon">☀️</div><h4>Summer</h4></div>
+        <div class="song-card"><div class="song-icon">🎤</div><h4>You Exist in My Song</h4></div>
+        <div class="song-card"><div class="song-icon">🌊</div><h4>River Flows in You</h4></div>
+        <div class="song-card"><div class="song-icon">🕊️</div><h4>Canon</h4></div>
+        <div class="song-card"><div class="song-icon">☀️</div><h4>Sunny Day</h4></div>
+        <div class="song-card"><div class="song-icon">🍃</div><h4>The Wind Rises</h4></div>
       </div>
     </div>
   </section>
@@ -558,31 +559,31 @@
   <section id="specs">
     <div class="section-inner">
       <div class="section-label">Technical Specs</div>
-      <h2 class="section-title">技术规格</h2>
+      <h2 class="section-title">Technical Specifications</h2>
       <div class="spec-grid">
         <div class="spec-card">
           <div class="spec-value">60+</div>
-          <div class="spec-label">SG90 舵机</div>
+          <div class="spec-label">SG90 Servos</div>
         </div>
         <div class="spec-card">
           <div class="spec-value">5</div>
-          <div class="spec-label">八度音域</div>
+          <div class="spec-label">Octaves Covered</div>
         </div>
         <div class="spec-card">
-          <div class="spec-value">4×</div>
-          <div class="spec-label">PCA9685 驱动级联</div>
+          <div class="spec-value">4&times;</div>
+          <div class="spec-label">PCA9685 Drivers Cascaded</div>
         </div>
         <div class="spec-card">
           <div class="spec-value">STM32F4</div>
-          <div class="spec-label">ARM Cortex-M4 主控</div>
+          <div class="spec-label">ARM Cortex-M4 MCU</div>
         </div>
         <div class="spec-card">
           <div class="spec-value">30A</div>
-          <div class="spec-label">电源峰值电流</div>
+          <div class="spec-label">Peak PSU Current</div>
         </div>
         <div class="spec-card">
-          <div class="spec-value">MIDI→C</div>
-          <div class="spec-label">Python 脚本转换</div>
+          <div class="spec-value">MIDI &rarr; C</div>
+          <div class="spec-label">Python Conversion Script</div>
         </div>
       </div>
     </div>
@@ -592,34 +593,34 @@
   <section id="safety">
     <div class="section-inner">
       <div class="section-label">⚠️ Safety</div>
-      <h2 class="section-title">安全须知</h2>
+      <h2 class="section-title">Safety Warnings</h2>
       <div class="safety-grid">
         <div class="safety-item">
           <div class="warn-icon">⚡</div>
           <div>
-            <h4>接线前测量</h4>
-            <p>务必用万用表（交流 750V 档）测量三芯电线零火线。L-N = 220V、L-E = 220V、N-E = 0V 方可使用。</p>
+            <h4>Measure Before Wiring</h4>
+            <p>Always test the 3-core power cable with a multimeter (AC 750V range). L–N = 220V, L–E = 220V, N–E = 0V before use. Some vendors mislabel live and neutral wires!</p>
           </div>
         </div>
         <div class="safety-item">
           <div class="warn-icon">🧤</div>
           <div>
-            <h4>禁止带电操作</h4>
-            <p>接线时拔掉插头，佩戴绝缘手套。220V 交流电涉及生命安全，务必谨慎。</p>
+            <h4>Never Work on Live Circuits</h4>
+            <p>Unplug before wiring. Wear insulated gloves. 220V AC is lethal — treat it with absolute respect.</p>
           </div>
         </div>
         <div class="safety-item">
           <div class="warn-icon">🔌</div>
           <div>
-            <h4>电源独立供电</h4>
-            <p>舵机供电与主控供电分离。LRS-150-5 专供舵机阵列，STM32 通过 ST-Link 或电池独立供电。</p>
+            <h4>Separate Power Domains</h4>
+            <p>Servo power and MCU power must be isolated. LRS-150-5 dedicated to the servo array; STM32 powered via ST-Link or battery independently.</p>
           </div>
         </div>
         <div class="safety-item">
           <div class="warn-icon">🔊</div>
           <div>
-            <h4>降噪策略</h4>
-            <p>60 个舵机同时工作噪声明显。通过物理隔离、真空消音、加大音响音量来掩盖机械噪声。</p>
+            <h4>Noise Mitigation</h4>
+            <p>60 servos running simultaneously produce noticeable mechanical noise. Mitigate with physical isolation, vacuum soundproofing, and increased speaker volume.</p>
           </div>
         </div>
       </div>
@@ -630,10 +631,10 @@
   <footer>
     <div class="footer-links">
       <a href="https://github.com/JaiJaiC/ServoPiaBot" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/FFtust/automatic_gita" target="_blank" rel="noopener">参考项目</a>
-      <a href="https://github.com/JaiJaiC/ServoPiaBot/blob/main/README.md" target="_blank" rel="noopener">完整 README</a>
+      <a href="https://github.com/FFtust/automatic_gita" target="_blank" rel="noopener">Reference Project</a>
+      <a href="https://github.com/JaiJaiC/ServoPiaBot/blob/main/README.md" target="_blank" rel="noopener">Full README</a>
     </div>
-    <p>© 2025 ServoPiaBot · Built with ❤️ by <a href="https://github.com/JaiJaiC">JaiJaiC</a> · Open Source under MIT License</p>
+    <p>&copy; 2025 ServoPiaBot &middot; Built with &#10084;&#65039; by <a href="https://github.com/JaiJaiC">JaiJaiC</a> &middot; Open Source under MIT License</p>
   </footer>
 
 </body>
