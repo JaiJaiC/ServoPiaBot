@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServoPiaBot — 智能钢琴演奏机器人</title>
+  <meta name="description" content="ServoPiaBot 是一个基于 STM32 和 60+ 舵机的开源钢琴演奏机器人，通过 MIDI 转舵机控制实现自动伴奏与 AI 音乐创作。">
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: #64b5f6; text-decoration: none; transition: color 0.3s; }
+    a:hover { color: #90caf9; }
+
+    /* ===== Navigation ===== */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo { font-size: 1.3rem; font-weight: 700; color: #fff; }
+    .nav-logo span { color: #ffb74d; }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a { color: #aaa; font-size: 0.95rem; font-weight: 500; }
+    .nav-links a:hover { color: #fff; }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; text-align: center; padding: 6rem 2rem 4rem;
+      background: radial-gradient(ellipse at 50% 40%, rgba(255,183,77,0.08) 0%, transparent 70%),
+                  radial-gradient(ellipse at 30% 60%, rgba(100,181,246,0.05) 0%, transparent 60%);
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300"><defs><pattern id="keys" x="0" y="0" width="48" height="120" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="34" height="118" fill="none" stroke="rgba(255,255,255,0.03)" rx="2"/><rect x="35" y="0" width="12" height="75" fill="rgba(255,255,255,0.02)" rx="1"/></pattern></defs><rect width="1200" height="300" fill="url(%23keys)"/></svg>') repeat-x bottom;
+      opacity: 0.5; pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero-badge {
+      display: inline-block; padding: 0.35rem 1rem;
+      border: 1px solid rgba(255,183,77,0.3); border-radius: 50px;
+      color: #ffb74d; font-size: 0.85rem; font-weight: 500;
+      margin-bottom: 1.5rem; letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #ffb74d 50%, #ff8a65 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; line-height: 1.2; margin-bottom: 1.2rem;
+    }
+    .hero-tagline {
+      font-size: 1.25rem; color: #999; max-width: 600px; margin: 0 auto 2.5rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
+      transition: all 0.3s; cursor: pointer; text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #ffb74d, #ff8a65); color: #1a1a1a;
+      box-shadow: 0 4px 20px rgba(255,183,77,0.25);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(255,183,77,0.4); color: #1a1a1a; }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.25); color: #ddd;
+    }
+    .btn-outline:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.05); }
+
+    /* ===== Sections ===== */
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-block; color: #ffb74d; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700;
+      color: #fff; margin-bottom: 1rem; line-height: 1.3;
+    }
+    .section-desc {
+      color: #999; font-size: 1.05rem; max-width: 650px; margin-bottom: 3rem;
+    }
+
+    /* ===== Story Section ===== */
+    #story { background: rgba(255,255,255,0.015); }
+    .story-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .story-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 2rem; transition: all 0.3s;
+    }
+    .story-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,183,77,0.2);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .story-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+    .story-card h3 { color: #fff; font-size: 1.15rem; margin-bottom: 0.6rem; }
+    .story-card p { color: #999; font-size: 0.95rem; }
+
+    /* ===== Evolution ===== */
+    #evolution { background: rgba(0,0,0,0.2); }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(180deg, rgba(255,183,77,0.5), rgba(100,181,246,0.3), rgba(255,183,77,0.2));
+    }
+    .tl-item { position: relative; margin-bottom: 2.5rem; padding-left: 2rem; }
+    .tl-item::before {
+      content: ''; position: absolute; left: -2rem; top: 0.5rem;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #ffb74d; border: 2px solid #0a0a0f;
+    }
+    .tl-item.later::before { background: #64b5f6; }
+    .tl-item.done::before { background: #4caf50; }
+    .tl-item h4 { color: #fff; font-size: 1.1rem; margin-bottom: 0.3rem; }
+    .tl-item .tl-tag {
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 4px;
+      font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .tl-tag.chosen { background: rgba(76,175,80,0.2); color: #81c784; }
+    .tl-tag.rejected { background: rgba(244,67,54,0.15); color: #ef5350; }
+    .tl-item p { color: #999; font-size: 0.95rem; }
+
+    /* ===== Hardware Gallery ===== */
+    #hardware { background: rgba(255,255,255,0.015); }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+    .gallery-item {
+      border-radius: 10px; overflow: hidden; position: relative;
+      border: 1px solid rgba(255,255,255,0.06); aspect-ratio: 4/3;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s;
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-item .caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 0.8rem; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      font-size: 0.85rem; color: #ccc;
+    }
+
+    /* ===== BOM Table ===== */
+    #bom { background: rgba(0,0,0,0.2); }
+    .bom-table {
+      width: 100%; border-collapse: collapse; font-size: 0.95rem;
+    }
+    .bom-table thead { border-bottom: 2px solid rgba(255,183,77,0.3); }
+    .bom-table th {
+      text-align: left; padding: 1rem 0.8rem; color: #ffb74d;
+      font-weight: 600; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .bom-table td {
+      padding: 0.75rem 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: #ccc;
+    }
+    .bom-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+    .bom-table .price { color: #ffb74d; font-weight: 500; }
+
+    /* ===== Wiring ===== */
+    #wiring { background: rgba(255,255,255,0.015); }
+    .wiring-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;
+    }
+    .wiring-text h4 { color: #fff; margin-bottom: 1rem; font-size: 1.05rem; }
+    .wiring-text p, .wiring-text li { color: #bbb; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .wiring-text ul { padding-left: 1.2rem; }
+    .wiring-img {
+      border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);
+    }
+    .wiring-img img { width: 100%; display: block; }
+
+    /* ===== Videos ===== */
+    #showcase { background: rgba(0,0,0,0.2); }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+    .video-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; overflow: hidden; transition: all 0.3s;
+    }
+    .video-card:hover {
+      border-color: rgba(255,183,77,0.2); box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .video-card video { width: 100%; display: block; }
+    .video-info { padding: 1.2rem 1.5rem; }
+    .video-info h4 { color: #fff; font-size: 1.1rem; margin-bottom: 0.3rem; }
+    .video-info p { color: #888; font-size: 0.9rem; }
+
+    /* ===== Repertoire ===== */
+    #repertoire { background: rgba(255,255,255,0.015); }
+    .song-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .song-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 1.5rem; text-align: center; transition: all 0.3s;
+    }
+    .song-card:hover {
+      transform: translateY(-2px); border-color: rgba(100,181,246,0.2);
+    }
+    .song-card .song-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .song-card h4 { color: #fff; font-size: 1rem; }
+
+    /* ===== Specs ===== */
+    #specs { background: rgba(0,0,0,0.2); }
+    .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+    .spec-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 1.5rem; text-align: center;
+    }
+    .spec-card .spec-value { font-size: 2rem; font-weight: 800; color: #ffb74d; }
+    .spec-card .spec-label { color: #888; font-size: 0.9rem; margin-top: 0.3rem; }
+
+    /* ===== Safety ===== */
+    #safety {
+      background: linear-gradient(135deg, rgba(244,67,54,0.08), rgba(255,152,0,0.06));
+      border-top: 1px solid rgba(244,67,54,0.15);
+      border-bottom: 1px solid rgba(244,67,54,0.15);
+    }
+    .safety-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .safety-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .safety-item .warn-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .safety-item h4 { color: #ff8a65; font-size: 1rem; margin-bottom: 0.3rem; }
+    .safety-item p { color: #aaa; font-size: 0.9rem; }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center; padding: 3rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05); color: #666; font-size: 0.9rem;
+    }
+    footer .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1rem; }
+    footer .footer-links a { color: #888; }
+    footer .footer-links a:hover { color: #fff; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .wiring-layout { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">🎹 Servo<span>Pia</span>Bot</div>
+      <ul class="nav-links">
+        <li><a href="#story">项目故事</a></li>
+        <li><a href="#evolution">方案演进</a></li>
+        <li><a href="#hardware">硬件</a></li>
+        <li><a href="#showcase">演示</a></li>
+        <li><a href="#specs">规格</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🎵 开源硬件 · 钢琴演奏机器人</div>
+      <h1>当机器学会弹钢琴</h1>
+      <p class="hero-tagline">
+        ServoPiaBot 使用 60+ 个舵机模拟手指按压琴键，通过 MIDI 解析驱动舵机阵列，
+        探索机器如何赋予音乐「情感」与「灵魂」。
+      </p>
+      <div class="hero-buttons">
+        <a href="https://github.com/JaiJaiC/ServoPiaBot" class="btn btn-primary" target="_blank" rel="noopener">
+          ⭐ GitHub 仓库
+        </a>
+        <a href="#showcase" class="btn btn-outline">🎬 观看演示</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section id="story">
+    <div class="section-inner">
+      <div class="section-label">Project Story</div>
+      <h2 class="section-title">背后的思考</h2>
+      <p class="section-desc">
+        传统自动演奏设备按键力度均匀、没有灵魂；机械震动与噪声让弹奏不够干净；
+        固化程序导致节奏反常、听感机械。ServoPiaBot 试图回答一个更有趣的问题——
+      </p>
+      <div class="story-grid">
+        <div class="story-card">
+          <div class="icon">🧠</div>
+          <h3>学习式演奏</h3>
+          <p>是否可以通过学习的方式让机器产生情感？对声音进行操作，输出不均匀的舵机角度和速度来模拟力度变化。</p>
+        </div>
+        <div class="story-card">
+          <div class="icon">🎼</div>
+          <h3>音乐技巧探索</h3>
+          <p>通过舵机角度微调和速度曲线，探索颤音、滑音、力度渐变等真实演奏中才有的音乐技巧。</p>
+        </div>
+        <div class="story-card">
+          <div class="icon">🤖</div>
+          <h3>自主即兴</h3>
+          <p>终极目标：让机器学会自主即兴创作，不仅仅是「播放」MIDI，而是真正「演奏」音乐。</p>
+        </div>
+        <div class="story-card">
+          <div class="icon">🔧</div>
+          <h3>全开源</h3>
+          <p>硬件、固件、上位机脚本全部开源。从 STM32 HAL 库到 MIDI 解析 Python 脚本，均可自由修改与分发。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Evolution -->
+  <section id="evolution">
+    <div class="section-inner">
+      <div class="section-label">Design Evolution</div>
+      <h2 class="section-title">方案演进历程</h2>
+      <p class="section-desc">从四种主流方案中不断对比、迭代，最终选定最务实的舵机方案。</p>
+      <div class="timeline">
+        <div class="tl-item later">
+          <span class="tl-tag rejected">Plan 4 · 已否决</span>
+          <h4>机械臂 + 灵巧手</h4>
+          <p>目前技术不成熟，DIY 门槛过高，成本不可控。且永远不可能达到人类钢琴大师水平。</p>
+        </div>
+        <div class="tl-item later">
+          <span class="tl-tag rejected">Plan 3 · 已否决</span>
+          <h4>滑轨 + 机械手</h4>
+          <p>无法弹奏复杂和弦；滑轨速度有限，节拍快的曲子跟不上。成本 ¥1000+。</p>
+        </div>
+        <div class="tl-item later">
+          <span class="tl-tag rejected">Plan 2 · 已否决</span>
+          <h4>推拉电磁铁</h4>
+          <p>物理噪声大，且单个电磁铁（AH-520B ¥7.5）成本高于舵机。暂未找到成熟开源方案。</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-tag chosen">Plan 1 · 最终方案 ✓</span>
+          <h4>数字舵机阵列（PCA9685 + SG90 × 60）</h4>
+          <p>
+            单个 SG90 仅 ¥5.5，60 个总成本 ¥385。PCA9685 模块支持 16 路 PWM，
+            4 个级联驱动 64 路舵机。物理噪声可通过物理隔离 + 真空消音降低，
+            加大音响音量后噪声不明显。具备成熟的开源生态（参考 automatic_gita）。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hardware Gallery -->
+  <section id="hardware">
+    <div class="section-inner">
+      <div class="section-label">Hardware</div>
+      <h2 class="section-title">硬件一览</h2>
+      <p class="section-desc">从控制板到电源，每一个组件都经过精心选型与调试。</p>
+      <div class="gallery">
+        <div class="gallery-item">
+          <img src="assets/images/1.jpg" alt="ServoPiaBot 整体" loading="lazy">
+          <div class="caption">整体效果</div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/images/2.jpg" alt="舵机阵列" loading="lazy">
+          <div class="caption">SG90 舵机阵列</div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/images/3.jpg" alt="细节特写" loading="lazy">
+          <div class="caption">安装细节</div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/images/4.jpg" alt="控制电路" loading="lazy">
+          <div class="caption">控制电路</div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/images/STM32F407VET6.png" alt="STM32 主控" loading="lazy">
+          <div class="caption">STM32F407VET6 主控</div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/images/PCA9685A模块.jpg" alt="PCA9685A 驱动模块" loading="lazy">
+          <div class="caption">PCA9685A PWM 驱动模块</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOM -->
+  <section id="bom">
+    <div class="section-inner">
+      <div class="section-label">Bill of Materials</div>
+      <h2 class="section-title">物料清单</h2>
+      <p class="section-desc">完整 BOM 总成本约 ¥1,200，覆盖 60 键（5 个八度）的驱动能力。</p>
+      <div style="overflow-x: auto;">
+        <table class="bom-table">
+          <thead>
+            <tr>
+              <th>物料</th>
+              <th>规格</th>
+              <th>数量</th>
+              <th>单价</th>
+              <th>小计</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🖥️ 主控板</td>
+              <td>STM32F407VET6（C30D ROS 底层主控四驱）</td>
+              <td>1</td>
+              <td class="price">¥315</td>
+              <td class="price">¥315</td>
+            </tr>
+            <tr>
+              <td>🔌 PWM 驱动</td>
+              <td>PCA9685A 16路模块</td>
+              <td>4</td>
+              <td class="price">¥17.5</td>
+              <td class="price">¥70</td>
+            </tr>
+            <tr>
+              <td>⚙️ 舵机</td>
+              <td>SG90 9g 180° 微型舵机</td>
+              <td>60</td>
+              <td class="price">¥5.5</td>
+              <td class="price">¥330</td>
+            </tr>
+            <tr>
+              <td>🔋 电源</td>
+              <td>MW LRS-150-5 (5V 30A)</td>
+              <td>1</td>
+              <td class="price">¥54</td>
+              <td class="price">¥54</td>
+            </tr>
+            <tr>
+              <td>🪚 铝型材</td>
+              <td>20系列 黑色（4×1400mm + 若干连接件）</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="price">¥150</td>
+            </tr>
+            <tr>
+              <td>🔩 角码</td>
+              <td>20 角码连接件</td>
+              <td>20</td>
+              <td class="price">¥1</td>
+              <td class="price">¥20</td>
+            </tr>
+            <tr>
+              <td>🔩 螺丝套装</td>
+              <td>M4 螺丝螺母垫圈 镀镍</td>
+              <td>若干</td>
+              <td>—</td>
+              <td class="price">¥80</td>
+            </tr>
+            <tr>
+              <td>🔧 工具</td>
+              <td>焊台、热熔胶枪、万用表</td>
+              <td>各1</td>
+              <td>—</td>
+              <td class="price">¥219</td>
+            </tr>
+            <tr>
+              <td>🔌 线材</td>
+              <td>杜邦线、三芯铜电线、粗电线、接线端子</td>
+              <td>若干</td>
+              <td>—</td>
+              <td class="price">¥35</td>
+            </tr>
+            <tr style="border-top: 2px solid rgba(255,183,77,0.3);">
+              <td colspan="4" style="text-align: right; font-weight: 700; color: #fff;">合计</td>
+              <td class="price" style="font-weight: 800; font-size: 1.1rem;">≈ ¥1,273</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wiring -->
+  <section id="wiring">
+    <div class="section-inner">
+      <div class="section-label">Wiring</div>
+      <h2 class="section-title">接线与通信</h2>
+      <p class="section-desc">I²C 总线级联架构，4 个 PCA9685A 模块控制 60+ 路舵机。</p>
+      <div class="wiring-layout">
+        <div class="wiring-text">
+          <h4>🔗 I²C 级联拓扑</h4>
+          <ul>
+            <li>STM32 I²C → PCA9685A #1 (0x40) → 舵机 1-16</li>
+            <li>PCA9685A #1 → PCA9685A #2 (0x41, 焊 A0) → 舵机 17-32</li>
+            <li>PCA9685A #2 → PCA9685A #3 (0x42, 焊 A1) → 舵机 33-48</li>
+            <li>PCA9685A #3 → PCA9685A #4 (0x43, 焊 A0+A1) → 舵机 49-60</li>
+          </ul>
+          <h4 style="margin-top: 1.5rem;">⚡ 供电方案</h4>
+          <ul>
+            <li>LRS-150-5 电源 → PCA9685A V+ / GND（舵机供电）</li>
+            <li>ST-Link → STM32（调试阶段供电）</li>
+            <li>独立运行：2S 锂电池或充电宝供电</li>
+          </ul>
+        </div>
+        <div class="wiring-img">
+          <img src="assets/images/Wiring.png" alt="接线图" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase -->
+  <section id="showcase">
+    <div class="section-inner">
+      <div class="section-label">Showcase</div>
+      <h2 class="section-title">演奏演示</h2>
+      <p class="section-desc">聆听 ServoPiaBot 的实际演奏效果——舵机阵列在真实钢琴上的表现。</p>
+      <div class="video-grid">
+        <div class="video-card">
+          <video src="https://github.com/user-attachments/assets/e9d6c083-28ff-4fc9-bb5c-8381d553bc86" controls preload="metadata" poster="assets/images/1.jpg"></video>
+          <div class="video-info">
+            <h4>🎵 菊次郎的夏天</h4>
+            <p>久石让经典作品 · Summer</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <video src="https://github.com/user-attachments/assets/550f6388-ff4b-4ef4-95c3-904e6b48f48c" controls preload="metadata" poster="assets/images/1.jpg"></video>
+          <div class="video-info">
+            <h4>🎵 我的歌声里</h4>
+            <p>曲婉婷 · 流行钢琴改编</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repertoire -->
+  <section id="repertoire">
+    <div class="section-inner">
+      <div class="section-label">Repertoire</div>
+      <h2 class="section-title">曲目库</h2>
+      <p class="section-desc">已适配 MIDI 转舵机控制的曲目，持续扩充中。</p>
+      <div class="song-list">
+        <div class="song-card"><div class="song-icon">☀️</div><h4>菊次郎的夏天</h4></div>
+        <div class="song-card"><div class="song-icon">🎤</div><h4>我的歌声里</h4></div>
+        <div class="song-card"><div class="song-icon">🌊</div><h4>River flows in you</h4></div>
+        <div class="song-card"><div class="song-icon">🕊️</div><h4>卡农</h4></div>
+        <div class="song-card"><div class="song-icon">☀️</div><h4>晴天</h4></div>
+        <div class="song-card"><div class="song-icon">🍃</div><h4>起风了</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section id="specs">
+    <div class="section-inner">
+      <div class="section-label">Technical Specs</div>
+      <h2 class="section-title">技术规格</h2>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="spec-value">60+</div>
+          <div class="spec-label">SG90 舵机</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value">5</div>
+          <div class="spec-label">八度音域</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value">4×</div>
+          <div class="spec-label">PCA9685 驱动级联</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value">STM32F4</div>
+          <div class="spec-label">ARM Cortex-M4 主控</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value">30A</div>
+          <div class="spec-label">电源峰值电流</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value">MIDI→C</div>
+          <div class="spec-label">Python 脚本转换</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety -->
+  <section id="safety">
+    <div class="section-inner">
+      <div class="section-label">⚠️ Safety</div>
+      <h2 class="section-title">安全须知</h2>
+      <div class="safety-grid">
+        <div class="safety-item">
+          <div class="warn-icon">⚡</div>
+          <div>
+            <h4>接线前测量</h4>
+            <p>务必用万用表（交流 750V 档）测量三芯电线零火线。L-N = 220V、L-E = 220V、N-E = 0V 方可使用。</p>
+          </div>
+        </div>
+        <div class="safety-item">
+          <div class="warn-icon">🧤</div>
+          <div>
+            <h4>禁止带电操作</h4>
+            <p>接线时拔掉插头，佩戴绝缘手套。220V 交流电涉及生命安全，务必谨慎。</p>
+          </div>
+        </div>
+        <div class="safety-item">
+          <div class="warn-icon">🔌</div>
+          <div>
+            <h4>电源独立供电</h4>
+            <p>舵机供电与主控供电分离。LRS-150-5 专供舵机阵列，STM32 通过 ST-Link 或电池独立供电。</p>
+          </div>
+        </div>
+        <div class="safety-item">
+          <div class="warn-icon">🔊</div>
+          <div>
+            <h4>降噪策略</h4>
+            <p>60 个舵机同时工作噪声明显。通过物理隔离、真空消音、加大音响音量来掩盖机械噪声。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://github.com/JaiJaiC/ServoPiaBot" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/FFtust/automatic_gita" target="_blank" rel="noopener">参考项目</a>
+      <a href="https://github.com/JaiJaiC/ServoPiaBot/blob/main/README.md" target="_blank" rel="noopener">完整 README</a>
+    </div>
+    <p>© 2025 ServoPiaBot · Built with ❤️ by <a href="https://github.com/JaiJaiC">JaiJaiC</a> · Open Source under MIT License</p>
+  </footer>
+
+</body>
+</html>
